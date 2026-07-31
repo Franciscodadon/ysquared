@@ -138,14 +138,25 @@ export default function Hero() {
                 </motion.text>
               </svg>
 
-              <motion.img
-                src="/logo-word-white.png"
-                alt="Youth Squared — Today's youth, tomorrow's leaders"
-                className="mt-6 h-auto w-[min(64vw,320px)]"
+              <motion.div
+                className="mt-6 flex flex-col items-center"
                 initial={reduce ? false : { opacity: 0, y: 10 }}
                 animate={reduce ? false : { opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 1.45 }}
-              />
+              >
+                <div
+                  className="font-display text-linen"
+                  style={{ fontSize: "1.75rem", fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase" }}
+                >
+                  Youth Squared
+                </div>
+                <div
+                  className="mt-3 font-display italic text-silver/85"
+                  style={{ fontSize: "0.72rem", letterSpacing: "0.14em", textTransform: "uppercase" }}
+                >
+                  Today&rsquo;s Youth &nbsp;Tomorrow&rsquo;s Leaders
+                </div>
+              </motion.div>
             </motion.div>
           </motion.div>
         </div>
