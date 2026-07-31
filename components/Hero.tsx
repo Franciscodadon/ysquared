@@ -192,7 +192,7 @@ export default function Hero() {
             transition={{ duration: 0.9, delay: 0.75 }}
             className="gilded mt-6 font-display text-[clamp(3.4rem,12vw,9rem)] font-normal leading-[0.92] tracking-[-0.03em]"
           >
-            Youth<sup className="align-super text-[0.34em] font-semibold">2</sup>
+            Y<sup className="ml-[0.04em] align-super text-[0.44em] font-semibold">2</sup>
           </motion.div>
 
           <motion.div
