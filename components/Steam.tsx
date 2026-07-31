@@ -4,7 +4,7 @@ const pillars = [
   { letter: "S", word: "Science", desc: "Ask the question, run the test, read what actually happened." },
   { letter: "T", word: "Technology", desc: "Tools that are current, taught by people who use them daily." },
   { letter: "E", word: "Entrepreneurship", desc: "Spot a problem, price a solution, pitch it to a room." },
-  { letter: "A", word: "Architecture", desc: "Design for people. Draw it, model it, defend the choices." },
+  { letter: "A", word: "Art", desc: "Draw it, design it, build it. Make what wasn't there before." },
   { letter: "M", word: "Media", desc: "Write it, film it, record it. Make something other people see." },
 ];
 

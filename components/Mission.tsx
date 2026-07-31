@@ -17,7 +17,7 @@ export default function Mission() {
               n: "01",
               label: "Mission",
               lead: "Y Squared multiplies the potential in young people across Tampa Bay.",
-              body: "We teach kids to build and express themselves through science, technology, entrepreneurship, architecture, and media — and we mentor the next wave of innovators.",
+              body: "We teach kids to build and express themselves through science, technology, entrepreneurship, art, and media — and we mentor the next wave of innovators.",
             },
             {
               n: "02",

@@ -11,7 +11,7 @@ type Program = {
 const featured: Program = {
   title: "Homeschool Co-Op",
   discipline: "All five pillars · Weekly",
-  tagline: "Science. Technology. Entrepreneurship. Architecture. Media.",
+  tagline: "Science. Technology. Entrepreneurship. Art. Media.",
   body: "All five pillars in one weekly schedule. Homeschooling gives your child freedom — what it can't always give them is a lab partner, a build team, or a teacher who specializes in the thing they're obsessed with. Two dedicated instructors, specialty teachers, and regular field trips.",
   tiers: [
     { name: "Explorers", range: "K–5" },
