@@ -1,18 +1,23 @@
 # Dependencies
-node_modules/
+/node_modules
 .pnp
 .pnp.js
 
-# Build output
-dist/
-build/
-.next/
-out/
+# Next.js
+/.next/
+/out/
+next-env.d.ts
+
+# Production build
+/build
+/dist
+
+# Preview screenshots (local QA only)
+/.preview/
 
 # Environment
 .env
-.env.local
-.env.*.local
+.env*.local
 
 # Logs
 *.log
@@ -25,3 +30,4 @@ yarn-error.log*
 .vscode/
 .idea/
 *.swp
+*.tsbuildinfo
