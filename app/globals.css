@@ -141,11 +141,46 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E");
 }
 
+/* ---------- hero: gilded liquid-metal type + bracketed square ---------- */
+.gilded {
+  background: linear-gradient(
+    105deg,
+    #5b6b79 0%,
+    #8fa0ad 30%,
+    #ffffff 48%,
+    #eaf0f3 52%,
+    #8fa0ad 70%,
+    #5b6b79 100%
+  );
+  background-size: 280% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: sheen 6s ease-in-out infinite;
+}
+@keyframes sheen {
+  0% {
+    background-position: 130% 0;
+  }
+  100% {
+    background-position: -30% 0;
+  }
+}
+.metal-bar {
+  background: linear-gradient(90deg, #6e8091, #e6edf1, #6e8091);
+}
+.metal-stub {
+  background: linear-gradient(180deg, #6e8091, #e6edf1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+  .gilded {
+    animation: none !important;
   }
 }

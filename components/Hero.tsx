@@ -1,181 +1,248 @@
 "use client";
 
-import { useRef } from "react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useReducedMotion,
-} from "motion/react";
+import { useEffect, useRef } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import MagneticButton from "./MagneticButton";
-
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
-};
-const item = {
-  hidden: { opacity: 0, y: 22 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } },
-};
 
 export default function Hero() {
   const reduce = useReducedMotion();
-  const wrapRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
+  const squareRef = useRef<HTMLDivElement>(null);
+  const cueRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const parallax = useRef(0);
+  const mouse = useRef({ x: -9999, y: -9999 });
 
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-  const sx = useSpring(px, { stiffness: 120, damping: 20, mass: 0.6 });
-  const sy = useSpring(py, { stiffness: 120, damping: 20, mass: 0.6 });
+  /* generative living field — always drifting */
+  useEffect(() => {
+    const cv = canvasRef.current;
+    if (!cv) return;
+    const ctx = cv.getContext("2d");
+    if (!ctx) return;
 
-  function onMove(e: React.MouseEvent<HTMLDivElement>) {
-    if (reduce || !wrapRef.current) return;
-    const r = wrapRef.current.getBoundingClientRect();
-    px.set(((e.clientX - r.left) / r.width - 0.5) * 20);
-    py.set(((e.clientY - r.top) / r.height - 0.5) * 20);
-  }
-  function reset() {
-    px.set(0);
-    py.set(0);
-  }
+    let W = 0,
+      H = 0,
+      DPR = 1,
+      raf = 0;
+    type P = { x: number; y: number; bvx: number; bvy: number; ix: number; iy: number };
+    let parts: P[] = [];
+
+    const resize = () => {
+      DPR = Math.min(2, window.devicePixelRatio || 1);
+      W = cv.clientWidth;
+      H = cv.clientHeight;
+      cv.width = W * DPR;
+      cv.height = H * DPR;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    };
+    const seed = () => {
+      const n = Math.round(Math.min(96, (W * H) / 16000));
+      parts = [];
+      for (let i = 0; i < n; i++) {
+        const a = Math.random() * 6.2832;
+        const s = 0.18 + Math.random() * 0.22;
+        parts.push({ x: Math.random() * W, y: Math.random() * H, bvx: Math.cos(a) * s, bvy: Math.sin(a) * s, ix: 0, iy: 0 });
+      }
+    };
+    const draw = () => {
+      const py = parallax.current;
+      ctx.clearRect(0, 0, W, H);
+      ctx.save();
+      ctx.translate(0, -py);
+      for (const p of parts) {
+        const dx = p.x - mouse.current.x;
+        const dy = p.y - (mouse.current.y + py);
+        const d2 = dx * dx + dy * dy;
+        if (d2 < 20000) {
+          const f = (20000 - d2) / 20000;
+          const d = Math.sqrt(d2) || 1;
+          p.ix += (dx / d) * f * 0.7;
+          p.iy += (dy / d) * f * 0.7;
+        }
+        p.ix *= 0.9;
+        p.iy *= 0.9;
+        p.x += p.bvx + p.ix;
+        p.y += p.bvy + p.iy;
+        if (p.x < -20) p.x += W + 40;
+        if (p.x > W + 20) p.x -= W + 40;
+        if (p.y < -20) p.y += H + 40;
+        if (p.y > H + 20) p.y -= H + 40;
+      }
+      for (let i = 0; i < parts.length; i++) {
+        for (let j = i + 1; j < parts.length; j++) {
+          const a = parts[i],
+            b = parts[j];
+          const dx = a.x - b.x,
+            dy = a.y - b.y;
+          const dd = dx * dx + dy * dy;
+          if (dd < 16000) {
+            ctx.strokeStyle = `rgba(195,205,212,${(1 - dd / 16000) * 0.45})`;
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+      for (const p of parts) {
+        ctx.fillStyle = "rgba(222,230,235,.7)";
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.3, 0, 6.2832);
+        ctx.fill();
+      }
+      ctx.restore();
+      raf = requestAnimationFrame(draw);
+    };
+
+    resize();
+    seed();
+    if (reduce) {
+      draw(); // one static frame
+      cancelAnimationFrame(raf);
+    } else {
+      raf = requestAnimationFrame(draw);
+    }
+    const onResize = () => {
+      resize();
+      seed();
+    };
+    window.addEventListener("resize", onResize);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [reduce]);
+
+  /* scroll glide — drift through the square */
+  useEffect(() => {
+    if (reduce) return;
+    const onScroll = () => {
+      const sec = sectionRef.current;
+      const sq = squareRef.current;
+      if (!sec || !sq) return;
+      const total = sec.offsetHeight - window.innerHeight;
+      const p = Math.min(1, Math.max(0, -sec.getBoundingClientRect().top / total));
+      sq.style.transform = `scale(${1 + p * 0.55}) translateY(${-p * 40}px)`;
+      sq.style.opacity = String(1 - Math.min(1, Math.max(0, (p - 0.05) / 0.6)));
+      if (cueRef.current) cueRef.current.style.opacity = String(Math.max(0, 1 - p * 4));
+      parallax.current = p * 40;
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [reduce]);
+
+  const bar = { hidden: { scaleX: 0 }, show: { scaleX: 1 } } as const;
+  const stub = { hidden: { scaleY: 0 }, show: { scaleY: 1 } } as const;
+  const t = { duration: 1.1, ease: [0.22, 1, 0.36, 1] as const };
 
   return (
-    <section
-      id="top"
-      className="grain relative flex min-h-[100dvh] items-center overflow-hidden bg-deep text-linen"
-      onMouseMove={onMove}
-      onMouseLeave={reset}
-      ref={wrapRef}
-    >
+    <section ref={sectionRef} id="top" className="relative bg-deep text-linen" style={{ height: "165vh" }}>
       <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(1100px 620px at 78% 18%, rgba(110,128,145,0.28), transparent 60%), radial-gradient(900px 700px at 10% 100%, rgba(28,61,90,0.55), transparent 55%)",
+        ref={stickyRef}
+        className="grain sticky top-0 flex h-[100dvh] items-center justify-center overflow-hidden"
+        onMouseMove={(e) => {
+          const r = canvasRef.current?.getBoundingClientRect();
+          if (r) mouse.current = { x: e.clientX - r.left, y: e.clientY - r.top };
         }}
-      />
-      <div className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-px -translate-x-1/2 bg-linen/5 lg:block" />
+        onMouseLeave={() => (mouse.current = { x: -9999, y: -9999 })}
+      >
+        <canvas ref={canvasRef} className="absolute inset-0 z-0 h-full w-full" />
+        <div
+          className="pointer-events-none absolute inset-0 z-[1]"
+          style={{
+            background:
+              "radial-gradient(1000px 620px at 50% 42%, rgba(110,128,145,0.24), transparent 62%), radial-gradient(900px 700px at 12% 100%, rgba(28,61,90,0.45), transparent 55%)",
+          }}
+        />
 
-      <div className="wrap relative grid w-full grid-cols-1 items-center gap-14 pt-28 pb-20 lg:grid-cols-[1.05fr_0.95fr] lg:pt-24 lg:pb-16">
-        {/* left — the promise */}
-        <motion.div variants={container} initial="hidden" animate="show">
-          <motion.p variants={item} className="font-mono text-[11px] uppercase tracking-[0.28em] text-silver/70">
+        {/* the square (from the mark), wrapping the content so the eyebrow stays inside */}
+        <motion.div
+          ref={squareRef}
+          initial={reduce ? false : "hidden"}
+          animate={reduce ? false : "show"}
+          className="relative z-[2] flex flex-col items-center px-[clamp(2.5rem,8vw,6rem)] py-[clamp(3rem,8vw,5.5rem)] text-center"
+        >
+          {/* bracketed frame */}
+          <motion.span variants={bar} transition={t} className="metal-bar absolute left-0 right-0 top-0 h-[2px] origin-center" />
+          <motion.span variants={bar} transition={{ ...t, delay: 0.1 }} className="metal-bar absolute bottom-0 left-0 right-0 h-[2px] origin-center" />
+          <motion.span variants={stub} transition={{ ...t, delay: 0.15 }} className="metal-stub absolute left-0 top-0 h-9 w-[2px] origin-top" />
+          <motion.span variants={stub} transition={{ ...t, delay: 0.2 }} className="metal-stub absolute right-0 top-0 h-9 w-[2px] origin-top" />
+          <motion.span variants={stub} transition={{ ...t, delay: 0.25 }} className="metal-stub absolute bottom-0 left-0 h-9 w-[2px] origin-bottom" />
+          <motion.span variants={stub} transition={{ ...t, delay: 0.3 }} className="metal-stub absolute bottom-0 right-0 h-9 w-[2px] origin-bottom" />
+
+          <motion.p
+            initial={reduce ? false : { opacity: 0 }}
+            animate={reduce ? false : { opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="font-mono text-[11px] uppercase tracking-[0.28em] text-silver/70"
+          >
             Y Squared Youth Services &nbsp;&middot;&nbsp; Tampa Bay, Florida
           </motion.p>
 
-          <h1 className="mt-7 font-display text-[clamp(2.9rem,7vw,5.6rem)] font-light leading-[1.02] tracking-[-0.02em]">
-            <motion.span variants={item} className="block">Today&rsquo;s youth.</motion.span>
-            <motion.span variants={item} className="block italic">
-              Tomorrow&rsquo;s <span className="foil font-normal">leaders.</span>
-            </motion.span>
-          </h1>
+          <motion.div
+            initial={reduce ? false : { opacity: 0 }}
+            animate={reduce ? false : { opacity: 1 }}
+            transition={{ duration: 0.9, delay: 0.75 }}
+            className="gilded mt-6 font-display text-[clamp(3.4rem,12vw,9rem)] font-normal leading-[0.92] tracking-[-0.03em]"
+          >
+            Youth<sup className="align-super text-[0.34em] font-semibold">2</sup>
+          </motion.div>
 
-          <motion.p variants={item} className="mt-8 max-w-[34rem] text-[1.15rem] font-light leading-relaxed text-linen/75">
-            We don&rsquo;t add to a young person. We multiply what&rsquo;s already
-            there &mdash; through S.T.E.A.M. academies and creative programs, with
-            mentors who stay long enough to matter.
-          </motion.p>
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 14 }}
+            animate={reduce ? false : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 1.05 }}
+            className="mt-6 font-display text-[clamp(1rem,2vw,1.35rem)] font-medium uppercase tracking-[0.24em]"
+          >
+            Youth Squared
+          </motion.div>
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 14 }}
+            animate={reduce ? false : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 1.2 }}
+            className="mt-3 font-display text-[0.72rem] uppercase italic tracking-[0.16em] text-silver"
+          >
+            Today&rsquo;s Youth &middot; Tomorrow&rsquo;s Leaders
+          </motion.div>
 
-          <motion.div variants={item} className="mt-10 flex flex-wrap gap-4">
-            <MagneticButton href="#programs" variant="light">See the Programs</MagneticButton>
-            <MagneticButton href="#involve" variant="outline-light">Partner With Us</MagneticButton>
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 14 }}
+            animate={reduce ? false : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 1.4 }}
+            className="mt-9 flex flex-wrap justify-center gap-4"
+          >
+            <MagneticButton href="#programs" variant="light">
+              See the Programs
+            </MagneticButton>
+            <MagneticButton href="#involve" variant="outline-light">
+              Partner With Us
+            </MagneticButton>
           </motion.div>
         </motion.div>
 
-        {/* right — the mark, with its bracket frame drawing on, then the wordmark */}
-        <div className="relative flex items-center justify-center">
-          <div
-            className="pointer-events-none absolute inset-0 -z-10 blur-[46px]"
-            style={{ background: "radial-gradient(circle at 50% 42%, rgba(195,205,212,0.20), transparent 60%)" }}
-          />
-          <motion.div style={{ x: sx, y: sy }} className="relative">
-            <motion.div
-              className="flex flex-col items-center"
-              animate={reduce ? undefined : { y: [0, -7, 0] }}
-              transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.6 }}
-            >
-              <svg
-                viewBox="0 0 200 200"
-                fill="none"
-                role="img"
-                aria-label="Y Squared"
-                className="h-auto w-[min(58vw,300px)]"
-              >
-                {/* top + bottom bracket lines draw on together */}
-                {[
-                  "M45 78 L45 48 L155 48 L155 78",
-                  "M45 122 L45 152 L155 152 L155 122",
-                ].map((d, i) => (
-                  <motion.path
-                    key={i}
-                    d={d}
-                    stroke="#F7F9FA"
-                    strokeWidth={4.5}
-                    fill="none"
-                    pathLength={1}
-                    initial={reduce ? false : { pathLength: 0, opacity: 0 }}
-                    animate={reduce ? false : { pathLength: 1, opacity: 1 }}
-                    transition={{ pathLength: { duration: 1.15, ease: [0.22, 1, 0.36, 1], delay: 0.25 }, opacity: { duration: 0.2, delay: 0.25 } }}
-                  />
-                ))}
-                {/* Y and exponent fade in as the frame lands */}
-                <motion.text
-                  x="100" y="150" textAnchor="middle" fill="#F7F9FA"
-                  style={{ fontFamily: "var(--font-spectral), Georgia, serif", fontWeight: 600, fontSize: "116px", letterSpacing: "-0.01em", transformBox: "fill-box", transformOrigin: "center" }}
-                  initial={reduce ? false : { opacity: 0, scale: 0.9 }}
-                  animate={reduce ? false : { opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.9 }}
-                >
-                  Y
-                </motion.text>
-                <motion.text
-                  x="133" y="86" textAnchor="middle" fill="#F7F9FA"
-                  style={{ fontFamily: "var(--font-spectral), Georgia, serif", fontWeight: 600, fontSize: "38px", transformBox: "fill-box", transformOrigin: "center" }}
-                  initial={reduce ? false : { opacity: 0, scale: 0.6 }}
-                  animate={reduce ? false : { opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 1.25 }}
-                >
-                  2
-                </motion.text>
-              </svg>
-
-              <motion.div
-                className="mt-6 flex flex-col items-center"
-                initial={reduce ? false : { opacity: 0, y: 10 }}
-                animate={reduce ? false : { opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 1.45 }}
-              >
-                <div
-                  className="font-display text-linen"
-                  style={{ fontSize: "1.75rem", fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase" }}
-                >
-                  Youth Squared
-                </div>
-                <div
-                  className="mt-3 font-display italic text-silver/85"
-                  style={{ fontSize: "0.72rem", letterSpacing: "0.14em", textTransform: "uppercase" }}
-                >
-                  Today&rsquo;s Youth &nbsp;Tomorrow&rsquo;s Leaders
-                </div>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </div>
-
-      <motion.div
-        className="pointer-events-none absolute bottom-7 left-1/2 -translate-x-1/2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.6, duration: 1 }}
-      >
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-          className="font-mono text-[10px] uppercase tracking-[0.3em] text-silver/50"
+          ref={cueRef}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.9, duration: 1 }}
+          className="pointer-events-none absolute bottom-7 left-1/2 z-[3] -translate-x-1/2"
         >
-          Scroll
+          <motion.div
+            animate={reduce ? undefined : { y: [0, 8, 0] }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+            className="font-mono text-[10px] uppercase tracking-[0.3em] text-silver/50"
+          >
+            Scroll
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 }
