@@ -33,21 +33,28 @@
 .foil{background:var(--grad-silver-soft);-webkit-background-clip:text;background-clip:text;color:transparent}
 .foil-line{background:linear-gradient(90deg,#6e8091 0%,#c3cdd4 100%)}
 .rule-metal{height:1px;border:0;background:linear-gradient(90deg,transparent,rgba(110,128,145,.55),transparent)}
-.mono{font-family:var(--mono)}
 .grain{position:relative}
 .grain::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E")}
 
+/* ---------- logo mark (faithful rebuild — single color, ² inside the frame) ---------- */
+.ymk{display:block}
+.logo-white{color:var(--linen)}
+.logo-ink{color:var(--ink)}
+.logo-lockup{display:flex;flex-direction:column;align-items:center;text-align:center}
+.wordmark{margin-top:1.6rem;font-family:var(--display);font-weight:500;text-transform:uppercase;letter-spacing:.2em;line-height:1;color:currentColor}
+.logo-tag{margin-top:.85rem;font-family:var(--display);font-style:italic;text-transform:uppercase;letter-spacing:.14em;color:var(--silver);opacity:.85}
+
 /* ---------- header ---------- */
-.hdr{position:fixed;inset-inline:0;top:0;z-index:50;transition:all .5s var(--ease);border-bottom:1px solid rgba(110,128,145,0)}
-.hdr.scrolled{background:rgba(238,241,243,.82);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);border-bottom-color:rgba(110,128,145,.22)}
+.hdr{position:fixed;inset-inline:0;top:0;z-index:50;transition:all .5s var(--ease);border-bottom:1px solid rgba(247,249,250,0)}
+.hdr.scrolled{background:rgba(11,26,42,.78);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);border-bottom-color:rgba(247,249,250,.12)}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;height:82px;transition:height .5s var(--ease)}
 .hdr.scrolled .bar{height:68px}
-.lockup{display:inline-flex;align-items:center;gap:.75rem}
-.lockup .word{font-family:var(--display);font-weight:500;letter-spacing:.14em;text-transform:uppercase;font-size:1.15rem;line-height:1}
+.lockup{display:inline-flex;align-items:center;gap:.7rem}
+.lockup .word{font-family:var(--display);font-weight:500;letter-spacing:.16em;text-transform:uppercase;font-size:1.1rem;line-height:1;color:var(--linen)}
 .nav{display:none;align-items:center;gap:2.25rem}
-.nav a{position:relative;padding:4px 0;font-size:14px;font-weight:500;color:rgba(28,61,90,.85);transition:color .3s}
-.nav a:hover{color:var(--ink)}
-.nav a::after{content:"";position:absolute;inset-inline:0;bottom:-2px;height:1px;background:var(--steel);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.nav a{position:relative;padding:4px 0;font-size:14px;font-weight:500;color:rgba(247,249,250,.82);transition:color .3s}
+.nav a:hover{color:var(--linen)}
+.nav a::after{content:"";position:absolute;inset-inline:0;bottom:-2px;height:1px;background:var(--silver);transform:scaleX(0);transform-origin:left;transition:transform .3s}
 .nav a:hover::after{transform:scaleX(1)}
 @media(min-width:1024px){.nav{display:flex}}
 
@@ -57,7 +64,7 @@
 #ys a.btn.solid:hover{background:transparent;color:var(--ink)}
 #ys a.btn.light{background:var(--linen);color:var(--deep);border-color:var(--linen)}
 #ys a.btn.light:hover{background:transparent;color:var(--linen)}
-#ys a.btn.outline-light{background:transparent;color:var(--linen);border-color:rgba(247,249,250,.45)}
+#ys a.btn.outline-light{background:transparent;color:var(--linen);border-color:rgba(247,249,250,.5)}
 #ys a.btn.outline-light:hover{border-color:var(--linen);background:var(--linen);color:var(--deep)}
 .hdr-cta{display:none}
 @media(min-width:640px){.hdr-cta{display:inline-flex}}
@@ -76,14 +83,21 @@
 .lead{margin-top:2rem;max-width:34rem;font-size:1.15rem;font-weight:300;line-height:1.6;color:rgba(247,249,250,.75)}
 .cta{margin-top:2.5rem;display:flex;flex-wrap:wrap;gap:1rem}
 .mark-wrap{position:relative;display:flex;align-items:center;justify-content:center}
-.mark-frame{position:relative}
-.mark-frame .c{position:absolute;width:4rem;height:4rem;border-color:rgba(195,205,212,.4)}
-.mark-frame .tl{left:-1.5rem;top:-1.5rem;border-left:1px solid;border-top:1px solid}
-.mark-frame .br{right:-1.5rem;bottom:-1.5rem;border-right:1px solid;border-bottom:1px solid}
-.mark-halo{position:absolute;inset:0;z-index:-1;filter:blur(40px);background:radial-gradient(circle at 50% 45%,rgba(195,205,212,.22),transparent 62%)}
+.mark-halo{position:absolute;inset:0;z-index:0;filter:blur(46px);background:radial-gradient(circle at 50% 42%,rgba(195,205,212,.22),transparent 60%)}
 .scroll-cue{position:absolute;bottom:1.75rem;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.3em;color:rgba(195,205,212,.5);animation:bob 2.2s ease-in-out infinite;opacity:0;animation-delay:1.6s}
 .hero.on .scroll-cue{opacity:1}
 @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+/* hero logo entrance — the logo settles in as one intact unit */
+.logo-lockup.hero-logo{position:relative;z-index:1;opacity:0;transform:scale(.94);filter:blur(7px)}
+.logo-lockup.hero-logo.in{animation:logoIn 1.2s var(--ease) forwards}
+@keyframes logoIn{to{opacity:1;transform:scale(1);filter:blur(0)}}
+.ymk-wrap{position:relative}
+.ymk-float{animation:floaty 6.5s ease-in-out infinite 1.4s}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.ymk-wrap::after{content:"";position:absolute;top:0;left:-45%;width:45%;height:100%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);opacity:0}
+.hero-logo.in .ymk-wrap::after{animation:sheen 1.15s ease-in-out 1.2s}
+@keyframes sheen{0%{transform:translateX(0);opacity:0}18%{opacity:1}100%{transform:translateX(360%);opacity:0}}
 
 /* ---------- sections ---------- */
 .sec{padding:7rem 0}
@@ -189,7 +203,8 @@
 .ft{position:relative;overflow:hidden;background:var(--deeper);color:rgba(247,249,250,.6);padding:5rem 0}
 .ftgrid{display:grid;grid-template-columns:1fr;gap:3rem}
 @media(min-width:768px){.ftgrid{grid-template-columns:1.6fr 1fr 1fr}}
-.ft .word{color:var(--linen)}
+.ft .flock{display:inline-flex;align-items:center;gap:.85rem;color:var(--linen)}
+.ft .word{font-family:var(--display);font-weight:500;letter-spacing:.16em;text-transform:uppercase;font-size:1.15rem;line-height:1;color:var(--linen)}
 .ft .tagl{margin-top:.5rem;font-family:var(--mono);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(195,205,212,.7)}
 .ftabout{margin-top:2rem;max-width:40ch;font-size:.95rem;line-height:1.7;color:rgba(247,249,250,.55)}
 .ft h4{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--linen);margin:0}
@@ -198,29 +213,15 @@
 .ft ul a:hover{color:var(--linen)}
 .legal{margin-top:4rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:rgba(247,249,250,.4)}
 
-/* ---------- reveals + logo animation ---------- */
+/* reveals */
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .85s var(--ease),transform .85s var(--ease)}
 .reveal.on{opacity:1;transform:none}
 
-.mk .frame{stroke-dasharray:1;stroke-dashoffset:1}
-.mk.play .frame{animation:draw 1.15s var(--ease) forwards}
-.mk.play .frame.b{animation-delay:.15s}
-@keyframes draw{to{stroke-dashoffset:0}}
-.mk .ywrap{clip-path:inset(0 0 100% 0)}
-.mk.play .ywrap{animation:wipe .9s var(--ease) forwards;animation-delay:.45s}
-@keyframes wipe{to{clip-path:inset(0 0 0 0)}}
-.mk .exp{opacity:0;transform:translateY(10px)}
-.mk.play .exp{animation:pop .7s var(--ease) forwards;animation-delay:1.05s}
-@keyframes pop{to{opacity:1;transform:translateY(0)}}
-.mk .sheen{transform:translateX(-70px)}
-.mk:hover .sheen{animation:sweep .9s ease-in-out}
-@keyframes sweep{0%{transform:translateX(-70px)}100%{transform:translateX(240px)}}
-
 @media(prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none;transition:none}
-  .mk .frame{stroke-dashoffset:0;animation:none}
-  .mk .ywrap{clip-path:none;animation:none}
-  .mk .exp{opacity:1;transform:none;animation:none}
+  .logo-lockup.hero-logo{opacity:1;transform:none;filter:none;animation:none}
+  .ymk-float{animation:none}
+  .ymk-wrap::after{display:none}
   .scroll-cue{animation:none}
   *{scroll-behavior:auto!important}
 }
@@ -230,12 +231,11 @@
   <!-- HEADER -->
   <header class="hdr" id="hdr">
     <div class="wrap bar">
-      <a href="#top" class="lockup" aria-label="Y Squared — home">
-        <svg width="38" height="38" viewBox="0 0 200 200" role="img" aria-label="Y Squared">
-          <path d="M 96 40 L 160 40 L 160 106" fill="none" stroke="#1c3d5a" stroke-width="4" stroke-linecap="square"/>
-          <path d="M 40 94 L 40 160 L 104 160" fill="none" stroke="#1c3d5a" stroke-width="4" stroke-linecap="square"/>
-          <text x="94" y="150" text-anchor="middle" fill="#1c3d5a" style="font-family:var(--display);font-weight:500;font-size:150px;letter-spacing:-.02em">Y</text>
-          <text x="150" y="74" text-anchor="middle" fill="#6e8091" style="font-family:var(--display);font-weight:600;font-size:58px">2</text>
+      <a href="#top" class="lockup logo-white" aria-label="Y Squared — home">
+        <svg class="ymk" width="40" height="40" viewBox="0 0 200 200" fill="none" role="img" aria-label="Y Squared">
+          <path d="M70 52 H156 V150 H52 V74" fill="none" stroke="currentColor" stroke-width="5"/>
+          <text x="100" y="148" text-anchor="middle" fill="currentColor" style="font-family:var(--display);font-weight:500;font-size:110px;letter-spacing:-.01em">Y</text>
+          <text x="132" y="88" text-anchor="middle" fill="currentColor" style="font-family:var(--display);font-weight:600;font-size:36px">2</text>
         </svg>
         <span class="word">Youth Squared</span>
       </a>
@@ -245,12 +245,12 @@
         <a href="#programs">Programs</a>
         <a href="#involve">Get Involved</a>
       </nav>
-      <a class="btn solid hdr-cta mag" href="#involve">Support a Student</a>
+      <a class="btn outline-light hdr-cta mag" href="#involve">Support a Student</a>
     </div>
   </header>
 
   <!-- HERO -->
-  <section id="top" class="hero grain" id="hero">
+  <section id="top" class="hero grain">
     <div class="hero-glow"></div>
     <div class="hero-rule"></div>
     <div class="wrap hero-grid">
@@ -266,26 +266,18 @@
           <a class="btn outline-light mag" href="#involve">Partner With Us</a>
         </div>
       </div>
-      <div class="mark-wrap">
-        <div class="mark-frame" id="heroMark">
-          <span class="c tl"></span><span class="c br"></span>
-          <div class="mark-halo"></div>
-          <svg class="mk" width="360" height="360" viewBox="0 0 200 200" style="width:min(64vw,360px);height:auto" role="img" aria-label="Y Squared">
-            <defs>
-              <linearGradient id="foilL" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#fff"/><stop offset="40%" stop-color="#fff"/><stop offset="100%" stop-color="#7e8c99"/>
-              </linearGradient>
-              <linearGradient id="shn" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#fff" stop-opacity="0"/><stop offset="50%" stop-color="#fff" stop-opacity=".55"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/>
-              </linearGradient>
-              <clipPath id="yw"><rect class="ywipe" x="0" y="24" width="200" height="148"/></clipPath>
-            </defs>
-            <path class="frame a" pathLength="1" d="M 96 40 L 160 40 L 160 106" fill="none" stroke="#f7f9fa" stroke-width="4" stroke-linecap="square"/>
-            <path class="frame b" pathLength="1" d="M 40 94 L 40 160 L 104 160" fill="none" stroke="#f7f9fa" stroke-width="4" stroke-linecap="square"/>
-            <g class="ywrap"><text x="94" y="150" text-anchor="middle" fill="#f7f9fa" style="font-family:var(--display);font-weight:500;font-size:150px;letter-spacing:-.02em">Y</text></g>
-            <text class="exp" x="150" y="74" text-anchor="middle" fill="url(#foilL)" style="font-family:var(--display);font-weight:600;font-size:58px">2</text>
-            <rect class="sheen" x="0" y="0" width="60" height="200" fill="url(#shn)" style="mix-blend-mode:overlay"/>
-          </svg>
+      <div class="mark-wrap" id="heroMark">
+        <div class="mark-halo"></div>
+        <div class="logo-lockup hero-logo logo-white" id="heroLogo">
+          <div class="ymk-wrap">
+            <svg class="ymk ymk-float" viewBox="0 0 200 200" fill="none" role="img" aria-label="Y Squared" style="width:min(56vw,290px);height:auto">
+              <path d="M70 52 H156 V150 H52 V74" fill="none" stroke="currentColor" stroke-width="4.5"/>
+              <text x="100" y="148" text-anchor="middle" fill="currentColor" style="font-family:var(--display);font-weight:500;font-size:110px;letter-spacing:-.01em">Y</text>
+              <text x="132" y="88" text-anchor="middle" fill="currentColor" style="font-family:var(--display);font-weight:600;font-size:36px">2</text>
+            </svg>
+          </div>
+          <div class="wordmark" style="font-size:1.75rem">Youth Squared</div>
+          <div class="logo-tag" style="font-size:.72rem">Today&rsquo;s Youth &nbsp;Tomorrow&rsquo;s Leaders</div>
         </div>
       </div>
     </div>
@@ -356,7 +348,6 @@
       </div>
 
       <div class="pgrid">
-        <!-- cards injected below via template repetition -->
         <article class="pcard reveal">
           <div class="plate-wrap"><div class="plate grain" style="background:linear-gradient(140deg,#24455f 0%,#12283d 100%)"><span class="c tr"></span><span class="c bl"></span><span class="glyph">&para;</span><span class="disc">Media &middot; Creative writing</span></div></div>
           <div class="inner">
@@ -440,15 +431,14 @@
     <div class="wrap" style="position:relative">
       <div class="ftgrid">
         <div>
-          <span class="lockup">
-            <svg width="44" height="44" viewBox="0 0 200 200" role="img" aria-label="Y Squared">
-              <path d="M 96 40 L 160 40 L 160 106" fill="none" stroke="#f7f9fa" stroke-width="4" stroke-linecap="square"/>
-              <path d="M 40 94 L 40 160 L 104 160" fill="none" stroke="#f7f9fa" stroke-width="4" stroke-linecap="square"/>
-              <text x="94" y="150" text-anchor="middle" fill="#f7f9fa" style="font-family:var(--display);font-weight:500;font-size:150px;letter-spacing:-.02em">Y</text>
-              <text x="150" y="74" text-anchor="middle" fill="#8a97a3" style="font-family:var(--display);font-weight:600;font-size:58px">2</text>
+          <span class="flock">
+            <svg class="ymk logo-white" width="46" height="46" viewBox="0 0 200 200" fill="none" role="img" aria-label="Y Squared">
+              <path d="M70 52 H156 V150 H52 V74" fill="none" stroke="currentColor" stroke-width="4.5"/>
+              <text x="100" y="148" text-anchor="middle" fill="currentColor" style="font-family:var(--display);font-weight:500;font-size:110px;letter-spacing:-.01em">Y</text>
+              <text x="132" y="88" text-anchor="middle" fill="currentColor" style="font-family:var(--display);font-weight:600;font-size:36px">2</text>
             </svg>
             <span style="display:flex;flex-direction:column;line-height:1">
-              <span class="word" style="font-size:1.15rem">Youth Squared</span>
+              <span class="word">Youth Squared</span>
               <span class="tagl">Today&rsquo;s youth &middot; Tomorrow&rsquo;s leaders</span>
             </span>
           </span>
@@ -487,16 +477,14 @@
 (function(){
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // header scroll state
   var hdr = document.getElementById('hdr');
   function onScroll(){ if(window.scrollY>24) hdr.classList.add('scrolled'); else hdr.classList.remove('scrolled'); }
   onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
 
-  // hero logo draw-on + scroll cue
-  var mk = document.querySelector('.mk');
+  // hero logo entrance
+  var heroLogo = document.getElementById('heroLogo');
   var hero = document.getElementById('top');
-  if(mk && !reduce){ requestAnimationFrame(function(){ mk.classList.add('play'); hero.classList.add('on'); }); }
-  else if(hero){ hero.classList.add('on'); }
+  requestAnimationFrame(function(){ if(heroLogo) heroLogo.classList.add('in'); if(hero) hero.classList.add('on'); });
 
   // scroll reveals
   var items = document.querySelectorAll('.reveal');
@@ -506,30 +494,28 @@
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } });
     }, {threshold:.16, rootMargin:'0px 0px -12% 0px'});
-    items.forEach(function(el,i){ el.style.transitionDelay = (i%4)*70 + 'ms'; io.observe(el); });
-    // hero items should not wait for scroll
-    document.querySelectorAll('#top .reveal').forEach(function(el,i){ el.style.transitionDelay=(i*90)+'ms'; setTimeout(function(){el.classList.add('on');}, 120); });
+    items.forEach(function(el){ io.observe(el); });
+    document.querySelectorAll('#top .reveal').forEach(function(el,i){ el.style.transitionDelay=(i*90)+'ms'; setTimeout(function(){el.classList.add('on');},120); });
   }
 
-  // magnetic buttons
+  // magnetic buttons + hero parallax
   if(!reduce){
     document.querySelectorAll('.mag').forEach(function(el){
       el.addEventListener('mousemove', function(e){
         var r = el.getBoundingClientRect();
-        var x = (e.clientX-(r.left+r.width/2))*0.25;
-        var y = (e.clientY-(r.top+r.height/2))*0.3;
-        el.style.transform = 'translate('+x+'px,'+y+'px)';
+        el.style.transform = 'translate('+((e.clientX-(r.left+r.width/2))*0.25)+'px,'+((e.clientY-(r.top+r.height/2))*0.3)+'px)';
       });
-      el.addEventListener('mouseleave', function(){ el.style.transform=''; el.style.transition='transform .4s var(--ease)'; setTimeout(function(){el.style.transition='';},400); });
+      el.addEventListener('mouseleave', function(){ el.style.transition='transform .4s var(--ease)'; el.style.transform=''; setTimeout(function(){el.style.transition='';},400); });
     });
-    // hero mark pointer parallax
     var mw = document.getElementById('heroMark');
-    if(mw){ hero.addEventListener('mousemove', function(e){
-      var r = hero.getBoundingClientRect();
-      var x = ((e.clientX-r.left)/r.width-0.5)*22;
-      var y = ((e.clientY-r.top)/r.height-0.5)*22;
-      mw.style.transform='translate('+x+'px,'+y+'px)';
-    }); hero.addEventListener('mouseleave', function(){ mw.style.transform=''; }); mw.style.transition='transform .5s var(--ease)'; }
+    if(mw && hero){
+      mw.style.transition='transform .5s var(--ease)';
+      hero.addEventListener('mousemove', function(e){
+        var r = hero.getBoundingClientRect();
+        mw.style.transform='translate('+(((e.clientX-r.left)/r.width-0.5)*20)+'px,'+(((e.clientY-r.top)/r.height-0.5)*20)+'px)';
+      });
+      hero.addEventListener('mouseleave', function(){ mw.style.transform=''; });
+    }
   }
 })();
 </script>

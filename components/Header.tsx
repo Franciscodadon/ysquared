@@ -24,16 +24,16 @@ export default function Header() {
     <motion.header
       className="fixed inset-x-0 top-0 z-50 transition-all duration-500"
       style={{
-        backgroundColor: scrolled ? "rgba(238,241,243,0.82)" : "rgba(238,241,243,0)",
-        backdropFilter: scrolled ? "blur(14px) saturate(1.2)" : "blur(0px)",
+        backgroundColor: scrolled ? "rgba(11,26,42,0.78)" : "rgba(11,26,42,0)",
+        backdropFilter: scrolled ? "blur(16px) saturate(1.2)" : "blur(0px)",
         borderBottom: scrolled
-          ? "1px solid rgba(110,128,145,0.22)"
-          : "1px solid rgba(110,128,145,0)",
+          ? "1px solid rgba(247,249,250,0.12)"
+          : "1px solid rgba(247,249,250,0)",
       }}
     >
       <div className="wrap flex items-center justify-between gap-6" style={{ height: scrolled ? 68 : 82 }}>
         <a href="#top" aria-label="Y Squared — home" className="shrink-0 transition-transform hover:scale-[1.02]">
-          <LogoLockup markSize={38} />
+          <LogoLockup markSize={38} tone="light" />
         </a>
 
         <nav className="hidden items-center gap-9 lg:flex">
@@ -41,16 +41,16 @@ export default function Header() {
             <a
               key={n.href}
               href={n.href}
-              className="group relative py-1 text-[14px] font-medium text-ink/85 transition-colors hover:text-ink"
+              className="group relative py-1 text-[14px] font-medium text-linen/85 transition-colors hover:text-linen"
             >
               {n.label}
-              <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-steel transition-transform duration-300 group-hover:scale-x-100" />
+              <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-silver transition-transform duration-300 group-hover:scale-x-100" />
             </a>
           ))}
         </nav>
 
         <div className="hidden sm:block">
-          <MagneticButton href="#involve" variant="solid">
+          <MagneticButton href="#involve" variant="outline-light">
             Support a Student
           </MagneticButton>
         </div>

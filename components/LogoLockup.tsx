@@ -19,14 +19,14 @@ export default function LogoLockup({
 
   return (
     <span className={`inline-flex items-center gap-3 ${className ?? ""}`}>
-      <LogoMark size={markSize} animate={false} tone={tone} />
+      <LogoMark size={markSize} tone={tone} />
       <span className="flex flex-col leading-none">
         <span
           className={`font-display ${word}`}
           style={{
-            fontSize: markSize > 60 ? "1.9rem" : "1.15rem",
+            fontSize: markSize > 60 ? "1.9rem" : "1.1rem",
             fontWeight: 500,
-            letterSpacing: "0.14em",
+            letterSpacing: "0.16em",
             textTransform: "uppercase",
           }}
         >
@@ -42,7 +42,7 @@ export default function LogoLockup({
               marginTop: "0.5rem",
             }}
           >
-            Today&rsquo;s youth · Tomorrow&rsquo;s leaders
+            Today&rsquo;s youth &middot; Tomorrow&rsquo;s leaders
           </span>
         )}
       </span>
