@@ -6,9 +6,9 @@ type Props = {
 };
 
 /**
- * The Y² mark, rebuilt to match the Y Squared logo exactly: a near-complete
- * square frame (open at the top-left corner), a serif "Y", and a superscript
- * "2" seated inside the upper-right of the frame. One solid color — no recolor.
+ * The Y² mark, matched to the Y Squared logo: a bracketed square (full top and
+ * bottom bars, each turning in with short corner stubs, open along the mid-sides)
+ * framing a serif "Y", with a serif superscript "2" in the upper-right. One color.
  */
 export default function LogoMark({
   size = 200,
@@ -32,22 +32,25 @@ export default function LogoMark({
       className={className}
     >
       <title>{title}</title>
-      <path d="M70 52 H156 V150 H52 V74" fill="none" stroke={color} strokeWidth={4.5} />
+      {/* top bracket: left stub · top bar · right stub */}
+      <path d="M45 78 L45 48 L155 48 L155 78" fill="none" stroke={color} strokeWidth={4.5} />
+      {/* bottom bracket: left stub · bottom bar · right stub */}
+      <path d="M45 122 L45 152 L155 152 L155 122" fill="none" stroke={color} strokeWidth={4.5} />
       <text
         x="100"
-        y="148"
+        y="150"
         textAnchor="middle"
         fill={color}
-        style={{ ...serif, fontWeight: 500, fontSize: "110px", letterSpacing: "-0.01em" }}
+        style={{ ...serif, fontWeight: 600, fontSize: "116px", letterSpacing: "-0.01em" }}
       >
         Y
       </text>
       <text
-        x="132"
-        y="88"
+        x="133"
+        y="86"
         textAnchor="middle"
         fill={color}
-        style={{ ...serif, fontWeight: 600, fontSize: "36px" }}
+        style={{ ...serif, fontWeight: 600, fontSize: "38px" }}
       >
         2
       </text>

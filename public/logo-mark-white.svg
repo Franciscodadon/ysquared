@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" role="img" aria-label="Y Squared">
+  <path d="M45 78 L45 48 L155 48 L155 78" fill="none" stroke="#F7F9FA" stroke-width="4.5"/>
+  <path d="M45 122 L45 152 L155 152 L155 122" fill="none" stroke="#F7F9FA" stroke-width="4.5"/>
+  <text x="100" y="150" text-anchor="middle" fill="#F7F9FA" font-family="Georgia, 'Times New Roman', serif" font-weight="600" font-size="116" letter-spacing="-1">Y</text>
+  <text x="133" y="86" text-anchor="middle" fill="#F7F9FA" font-family="Georgia, 'Times New Roman', serif" font-weight="600" font-size="38">2</text>
+</svg>
