@@ -6,8 +6,6 @@ type Program = {
   tagline: string;
   body: string;
   tiers: { name: string; range: string }[];
-  plate: string; // gradient for the image plate
-  glyph: string; // decorative ghost letter
 };
 
 const featured: Program = {
@@ -20,8 +18,6 @@ const featured: Program = {
     { name: "Builders", range: "6–8" },
     { name: "Innovators", range: "9–12" },
   ],
-  plate: "linear-gradient(135deg,#1c3d5a 0%,#0e2136 60%,#081726 100%)",
-  glyph: "∑",
 };
 
 const programs: Program[] = [
@@ -35,8 +31,6 @@ const programs: Program[] = [
       { name: "Session", range: "11–14" },
       { name: "Studio", range: "15–18" },
     ],
-    plate: "linear-gradient(140deg,#24455f 0%,#12283d 100%)",
-    glyph: "¶",
   },
   {
     title: "Media Masters",
@@ -48,8 +42,6 @@ const programs: Program[] = [
       { name: "Director's Chair", range: "11–14" },
       { name: "Studio", range: "15–18" },
     ],
-    plate: "linear-gradient(140deg,#1f3e57 0%,#0e2136 100%)",
-    glyph: "▷",
   },
   {
     title: "Y Squared Tech",
@@ -61,8 +53,6 @@ const programs: Program[] = [
       { name: "Build", range: "11–14" },
       { name: "Deploy", range: "15–18" },
     ],
-    plate: "linear-gradient(140deg,#26485f 0%,#102a3e 100%)",
-    glyph: "⌘",
   },
   {
     title: "Kids in the Kitchen",
@@ -74,34 +64,8 @@ const programs: Program[] = [
       { name: "Line", range: "11–14" },
       { name: "Service", range: "15–18" },
     ],
-    plate: "linear-gradient(140deg,#213f56 0%,#0d2338 100%)",
-    glyph: "✦",
   },
 ];
-
-function Plate({ program, tall }: { program: Program; tall?: boolean }) {
-  return (
-    // TODO(photography): replace this brand plate with real program photography.
-    // Suggested shot per program in the shot list handed to the client.
-    <div
-      className={`relative overflow-hidden ${tall ? "h-full min-h-[260px]" : "aspect-[16/10]"}`}
-      style={{ background: program.plate }}
-    >
-      <div className="grain absolute inset-0 opacity-40" />
-      <span className="pointer-events-none absolute right-5 top-5 h-8 w-8 border-r border-t border-linen/25" />
-      <span className="pointer-events-none absolute bottom-5 left-5 h-8 w-8 border-b border-l border-linen/25" />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -bottom-6 -right-2 select-none font-display text-[9rem] leading-none text-linen/[0.06]"
-      >
-        {program.glyph}
-      </span>
-      <span className="absolute left-5 top-5 font-mono text-[10px] uppercase tracking-[0.2em] text-silver/80">
-        {program.discipline}
-      </span>
-    </div>
-  );
-}
 
 function Tiers({ tiers }: { tiers: Program["tiers"] }) {
   return (
@@ -116,14 +80,21 @@ function Tiers({ tiers }: { tiers: Program["tiers"] }) {
   );
 }
 
+function Discipline({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-steel">
+      {children}
+    </span>
+  );
+}
+
 export default function Programs() {
   return (
     <section id="programs" className="bg-paper py-28 md:py-36">
       <div className="wrap">
         <Reveal>
           <h2 className="max-w-[20ch] font-display text-[clamp(2rem,4.6vw,3.4rem)] font-normal leading-[1.08] text-ink">
-            Four doors into the pillars. One way in for{" "}
-            <span className="italic">homeschool families.</span>
+            Find the thing they can&rsquo;t <span className="italic">put down.</span>
           </h2>
         </Reveal>
         <Reveal delay={0.08}>
@@ -135,50 +106,48 @@ export default function Programs() {
           </p>
         </Reveal>
 
-        {/* featured — the co-op */}
+        {/* featured — the co-op, clean white card */}
         <Reveal delay={0.05} className="mt-16">
-          <article className="group grid grid-cols-1 overflow-hidden border border-paper-2 bg-linen lg:grid-cols-[1.05fr_1fr]">
-            <Plate program={featured} tall />
-            <div className="p-10 md:p-14">
-              <h3 className="font-display text-[2.1rem] font-normal leading-tight text-ink">
-                {featured.title}
-              </h3>
-              <p className="mt-2 font-display text-[1.05rem] italic text-slate">
-                {featured.tagline}
-              </p>
-              <p className="mt-6 max-w-[52ch] text-[1.02rem] leading-relaxed text-ink/62">
-                {featured.body}
-              </p>
-              <Tiers tiers={featured.tiers} />
+          <article className="border border-paper-2 border-l-2 border-l-steel bg-linen p-10 md:p-14">
+            <Discipline>{featured.discipline}</Discipline>
+            <div className="mt-5 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+              <div>
+                <h3 className="font-display text-[2.1rem] font-normal leading-tight text-ink">
+                  {featured.title}
+                </h3>
+                <p className="mt-3 font-display text-[1.05rem] italic text-slate">
+                  {featured.tagline}
+                </p>
+              </div>
+              <div>
+                <p className="max-w-[52ch] text-[1.02rem] leading-relaxed text-ink/62">
+                  {featured.body}
+                </p>
+                <Tiers tiers={featured.tiers} />
+              </div>
             </div>
           </article>
         </Reveal>
 
-        {/* the four programs */}
+        {/* the four programs — clean white cards, no plates */}
         <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2">
           {programs.map((p, i) => (
             <Reveal
               key={p.title}
               delay={(i % 2) * 0.08}
-              className="group flex flex-col overflow-hidden border border-paper-2 bg-linen transition-shadow duration-500 hover:shadow-[0_28px_60px_-34px_rgba(14,33,54,0.55)]"
+              className="group flex flex-col border border-paper-2 bg-linen p-9 transition-shadow duration-500 hover:shadow-[0_28px_60px_-34px_rgba(14,33,54,0.5)] md:p-11"
             >
-              <div className="overflow-hidden">
-                <div className="transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]">
-                  <Plate program={p} />
-                </div>
-              </div>
-              <div className="flex flex-1 flex-col p-9 md:p-11">
-                <h3 className="font-display text-[1.7rem] font-normal leading-tight text-ink">
-                  {p.title}
-                </h3>
-                <p className="mt-2 font-display text-[1rem] italic text-slate">
-                  {p.tagline}
-                </p>
-                <p className="mt-5 max-w-[50ch] flex-1 text-[0.98rem] leading-relaxed text-ink/62">
-                  {p.body}
-                </p>
-                <Tiers tiers={p.tiers} />
-              </div>
+              <Discipline>{p.discipline}</Discipline>
+              <h3 className="mt-5 font-display text-[1.7rem] font-normal leading-tight text-ink">
+                {p.title}
+              </h3>
+              <p className="mt-2 font-display text-[1rem] italic text-slate">
+                {p.tagline}
+              </p>
+              <p className="mt-5 max-w-[50ch] flex-1 text-[0.98rem] leading-relaxed text-ink/62">
+                {p.body}
+              </p>
+              <Tiers tiers={p.tiers} />
             </Reveal>
           ))}
         </div>

@@ -7,7 +7,6 @@ import {
   useSpring,
   useReducedMotion,
 } from "motion/react";
-import LogoMark from "./LogoMark";
 import MagneticButton from "./MagneticButton";
 
 const container = {
@@ -82,37 +81,71 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* right — the exact logo lockup, settling in as one intact unit */}
+        {/* right — the mark, with its bracket frame drawing on, then the wordmark */}
         <div className="relative flex items-center justify-center">
           <div
             className="pointer-events-none absolute inset-0 -z-10 blur-[46px]"
-            style={{ background: "radial-gradient(circle at 50% 42%, rgba(195,205,212,0.22), transparent 60%)" }}
+            style={{ background: "radial-gradient(circle at 50% 42%, rgba(195,205,212,0.20), transparent 60%)" }}
           />
           <motion.div style={{ x: sx, y: sy }} className="relative">
             <motion.div
-              className="flex flex-col items-center text-center"
-              initial={reduce ? false : { opacity: 0, scale: 0.94, filter: "blur(7px)" }}
-              animate={reduce ? false : { opacity: 1, scale: 1, filter: "blur(0px)" }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col items-center"
+              animate={reduce ? undefined : { y: [0, -7, 0] }}
+              transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.6 }}
             >
-              <motion.div
-                animate={reduce ? undefined : { y: [0, -7, 0] }}
-                transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
+              <svg
+                viewBox="0 0 200 200"
+                fill="none"
+                role="img"
+                aria-label="Y Squared"
+                className="h-auto w-[min(58vw,300px)]"
               >
-                <LogoMark tone="light" className="h-auto w-[min(56vw,290px)]" />
-              </motion.div>
-              <div
-                className="mt-6 font-display text-linen"
-                style={{ fontSize: "1.75rem", fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase" }}
-              >
-                Youth Squared
-              </div>
-              <div
-                className="mt-3 font-display italic text-silver/85"
-                style={{ fontSize: "0.72rem", letterSpacing: "0.14em", textTransform: "uppercase" }}
-              >
-                Today&rsquo;s Youth &nbsp;Tomorrow&rsquo;s Leaders
-              </div>
+                {/* top + bottom bracket lines draw on together */}
+                {[
+                  "M45 78 L45 48 L155 48 L155 78",
+                  "M45 122 L45 152 L155 152 L155 122",
+                ].map((d, i) => (
+                  <motion.path
+                    key={i}
+                    d={d}
+                    stroke="#F7F9FA"
+                    strokeWidth={4.5}
+                    fill="none"
+                    pathLength={1}
+                    initial={reduce ? false : { pathLength: 0, opacity: 0 }}
+                    animate={reduce ? false : { pathLength: 1, opacity: 1 }}
+                    transition={{ pathLength: { duration: 1.15, ease: [0.22, 1, 0.36, 1], delay: 0.25 }, opacity: { duration: 0.2, delay: 0.25 } }}
+                  />
+                ))}
+                {/* Y and exponent fade in as the frame lands */}
+                <motion.text
+                  x="100" y="150" textAnchor="middle" fill="#F7F9FA"
+                  style={{ fontFamily: "var(--font-spectral), Georgia, serif", fontWeight: 600, fontSize: "116px", letterSpacing: "-0.01em", transformBox: "fill-box", transformOrigin: "center" }}
+                  initial={reduce ? false : { opacity: 0, scale: 0.9 }}
+                  animate={reduce ? false : { opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.9 }}
+                >
+                  Y
+                </motion.text>
+                <motion.text
+                  x="133" y="86" textAnchor="middle" fill="#F7F9FA"
+                  style={{ fontFamily: "var(--font-spectral), Georgia, serif", fontWeight: 600, fontSize: "38px", transformBox: "fill-box", transformOrigin: "center" }}
+                  initial={reduce ? false : { opacity: 0, scale: 0.6 }}
+                  animate={reduce ? false : { opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 1.25 }}
+                >
+                  2
+                </motion.text>
+              </svg>
+
+              <motion.img
+                src="/logo-word-white.png"
+                alt="Youth Squared — Today's youth, tomorrow's leaders"
+                className="mt-6 h-auto w-[min(64vw,320px)]"
+                initial={reduce ? false : { opacity: 0, y: 10 }}
+                animate={reduce ? false : { opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 1.45 }}
+              />
             </motion.div>
           </motion.div>
         </div>

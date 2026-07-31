@@ -41,7 +41,7 @@ export default function Header() {
             <a
               key={n.href}
               href={n.href}
-              className="group relative py-1 text-[14px] font-medium text-linen/85 transition-colors hover:text-linen"
+              className="group relative py-1 text-[14px] font-medium text-linen transition-colors hover:text-silver"
             >
               {n.label}
               <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-silver transition-transform duration-300 group-hover:scale-x-100" />
