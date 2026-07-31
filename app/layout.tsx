@@ -36,7 +36,8 @@ export const metadata: Metadata = {
     type: "website",
   },
   icons: {
-    icon: [{ url: "/favicon.png", type: "image/png" }],
+    // basePath is not auto-applied to metadata icons — prefix it manually
+    icon: [{ url: `${process.env.GHP_BASE_PATH ?? "/ysquared"}/favicon.png`, type: "image/png" }],
   },
 };
 
