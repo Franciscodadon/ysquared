@@ -190,9 +190,10 @@ export default function Hero() {
             initial={reduce ? false : { opacity: 0 }}
             animate={reduce ? false : { opacity: 1 }}
             transition={{ duration: 0.9, delay: 0.75 }}
-            className="gilded mt-6 font-display text-[clamp(3.4rem,12vw,9rem)] font-normal leading-[0.92] tracking-[-0.03em]"
+            className="mt-6 font-display text-[clamp(3.4rem,12vw,9rem)] font-normal leading-[0.92] tracking-[-0.03em]"
           >
-            Y<sup className="ml-[0.04em] align-super text-[0.44em] font-semibold">2</sup>
+            <span className="gilded">Y</span>
+            <sup className="gilded ml-[0.04em] align-super text-[0.42em] font-semibold">2</sup>
           </motion.div>
 
           <motion.div
